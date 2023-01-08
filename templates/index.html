@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang='ru'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <link rel="shortcut icon" href="icon.png" type="image/x-icon">
+    <title>Text Sense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/stylesheet.css') }}">
+    <script src="{{ url_for('static', filename='js/brython.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/brython_stdlib.min.js') }}"></script>
+    <script type="text/python3">
+        from browser import ajax, document
+        import json
+    
+    
+        o1 = document['answer_p']
+            
+        def p(txt):
+            if txt.text=='-1':
+                o1.html = f'Текст не распознан'
+            else:
+                o1.html = f'Тексты похожи на: {str(txt.text)}%'
+
+            o1.scrollIntoView({'behavior': 'smooth', 'block': 'start'})
+    
+        def click(e):
+            req = ajax.Ajax()
+            req.open('POST', 'http://192.168.31.102:8080/api/result')
+            req.bind("complete", p)
+            req.send({'t1': document['text1'].value, 't2': document['text2'].value})
+
+            
+        document["compare_btn"].bind("click", click)
+    </script>
+</head>
+
+<body onload="brython()">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>TEXT SENSE</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="leveling">
+        <textarea id="text1" placeholder="Введите первый текст"></textarea>
+        <textarea id="text2" placeholder="Введите второй текст"></textarea>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="but_back">
+                <button id="compare_btn" class="btn_txt">Сравнить</button>
+            </div>
+        </div>
+    </div>
+    <p id="answer_p" class="answer"></p>
+</body>
+
+</html>
