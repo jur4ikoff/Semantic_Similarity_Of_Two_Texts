@@ -13,9 +13,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'project'
 CORS(app)
 
-
-# text1 = 'сегодня в москве плохая погода'
-# text2 = 'к вечеру в столице ожидается ураган'
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -29,4 +26,4 @@ def testpath():
 
 
 if __name__ == '__main__':
-    app.run(port=8080, host='192.168.31.102')
+    app.run(port=8080, host='192.168.50.254')

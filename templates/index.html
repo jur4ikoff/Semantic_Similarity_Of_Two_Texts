@@ -17,7 +17,15 @@
     
     
         o1 = document['answer_p']
-            
+
+        def ontextchange(e):
+            tb1 = document["text1"].value
+            tb2 = document["text2"].value
+            word_cnt_1, symbol_cnt_1 = len(tb1.split(' ')), len(tb1)
+            word_cnt_2, symbol_cnt_2 = len(tb2.split(' ')), len(tb2)
+            document["tb1stats"].html = f'Первый текст:  Букв: {symbol_cnt_1}, слов: {word_cnt_1}'
+            document["tb2stats"].html = f'Второй текст:  Букв: {symbol_cnt_2}, слов: {word_cnt_2}'
+
         def p(txt):
             if txt.text=='-1':
                 o1.html = f'Текст не распознан'
@@ -28,12 +36,14 @@
     
         def click(e):
             req = ajax.Ajax()
-            req.open('POST', 'http://192.168.31.102:8080/api/result')
+            req.open('POST', 'http://192.168.50.254:8080/api/result')
             req.bind("complete", p)
             req.send({'t1': document['text1'].value, 't2': document['text2'].value})
 
             
         document["compare_btn"].bind("click", click)
+        document["text1"].bind("input", ontextchange)
+        document["text2"].bind("input", ontextchange)
     </script>
 </head>
 
@@ -58,6 +68,8 @@
         </div>
     </div>
     <p id="answer_p" class="answer"></p>
+    <p id="tb1stats"></p>
+    <p id="tb2stats"></p>
 </body>
 
 </html>

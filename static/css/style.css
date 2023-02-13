@@ -93,8 +93,19 @@ textarea:hover {
 }
 
 .answer {
+  font-size: 25px;
   margin-top: 4%;
+  letter-spacing: 0.05em;
   color:rgba(255, 255, 255, 0.9);
   font-family: 'Akzidenz-Grotesk Pro Bold Ext';
   font-size: 30px;
 }
+
+p {font-family: 'Akzidenz-Grotesk Pro Bold Ext';
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  background: linear-gradient(90deg, #FFFFFF 0%, rgba(255, 255, 255, 0.49) 0.01%, rgba(255, 255, 255, 0.95) 53.65%, rgba(255, 255, 255, 0.5) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-top: 1%;}

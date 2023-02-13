@@ -5,7 +5,7 @@ import gensim
 import numpy as np
 import pymorphy2
 
-model = gensim.models.KeyedVectors.load_word2vec_format('model.bin', binary=True)
+model = gensim.models.KeyedVectors.load_word2vec_format('model1.bin', binary=True)
 
 
 class analys:
@@ -27,8 +27,32 @@ class analys:
 
         return text
 
+    def replace_antonyms(self, text):
+        keywords = ['НЕ', 'не', 'Не']
+        text = text.split()
+        for i in range(len(text) - 1):
+            if text[i] in set(keywords):
+                try:
+                    text_to_replace = text[i + 1]
+                    for sense in wn.get_senses(text_to_replace):
+                        res = sense.synset.antonyms[0].title.split()[0]
+                        res = self.clear_text(self, res)
+                        res = res.lower()
+                        text[i + 1] = res
+                        text[i] = ''
+
+
+                except Exception as e:
+                    pass
+
+        text = [a for a in text if a]
+        return ' '.join(text)
+
+
     def determine_vector(self, text: str):
         clean_text = self.clear_text(text)
+        text_to_antonyms = self.replace_antonyms(clean_text)
+        clean_text = self.clear_text(text_to_antonyms)
         text_list = clean_text.split(' ')  # список со словами
         text_len = len(text_list)
 
@@ -46,7 +70,7 @@ class analys:
             normal_form = word_analyzed.normal_form.replace('ё', 'е')
 
             pymorph_POS_to_w2v = {'ADVB': 'ADV', 'ADJF': 'ADJ', 'NPRO': 'PROPN',
-                                  'PRCL': 'NOUN'}  # Necessary due to pymorphy has another aliases for Parts of Speech than w2v
+                                  'PRCL': 'NOUN'}
             for k, v in pymorph_POS_to_w2v.items():
                 try:
                     POS = POS.replace(k, v)
